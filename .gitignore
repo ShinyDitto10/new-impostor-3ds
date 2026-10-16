@@ -1,0 +1,14 @@
+build/
+buildtools/
+output/
+.vscode/
+
+*.elf
+*.smdh
+*.3dsx
+*.cia
+*.o
+*.d
+*.lst
+*.map
+*.dump
