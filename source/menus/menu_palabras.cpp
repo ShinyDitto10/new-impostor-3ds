@@ -9,15 +9,15 @@ static bool palabra_vista = false;
 static vector<int> jugadores_visto_palabra;
 static int nombre_seleccionado = 0;
 static u32 color_tarjeta;
+static string texto_arriba = "Escoge tu nombre de la lista:";
 
 void mostrar_palabra(){
     palabra_vista = true;
     if(partida.jugador_es_impostor(nombre_seleccionado)){
         color_tarjeta = (u32)Color::ROJO;
         texto_tarjeta = "IMPOSTOR";
-        if(partida.hay_pista){
-            texto_tarjeta += "\nPista: " + partida.pista_impostor;
-        }
+        if(partida.hay_pista) texto_tarjeta += "\nPista: " + partida.pista_impostor;
+        if(partida.impostores_se_conocen) texto_arriba = "Los impostores son:";
     } else{
         color_tarjeta = (u32)Color::VERDE;
         texto_tarjeta = partida.palabra_jugadores;
@@ -29,6 +29,7 @@ void siguiente_jugador(){
     viendo_palabra = false;
     jugadores_visto_palabra.push_back(nombre_seleccionado);
     texto_tarjeta = "";
+    texto_arriba = "Escoge tu nombre de la lista:";
 
     if(jugadores_visto_palabra.size() == partida.num_jugadores){
         menu_activo = Menu::PARTIDA;
@@ -41,7 +42,7 @@ void siguiente_jugador(){
 
 void loop_menu_palabras(){
     static vector<Elemento*> menu_palabras_arriba = {
-        new Texto(200, 10, 0.75, "Escoge tu nombre de la lista:", C2D_AlignCenter),
+        new TextoDinamico(200, 10, 0.75, texto_arriba, C2D_AlignCenter),
         new Texto(200, 220, 0.5, "Cruceta: Navegar  A: Elegir nombre", C2D_AlignCenter)
     };
 
