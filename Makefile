@@ -37,8 +37,8 @@ TOOLCHAIN := arm-none-eabi
 APP_INFO := $(RESOURCES)/AppInfo
 BANNER_AUDIO := $(RESOURCES)/audio
 BANNER_IMAGE := $(RESOURCES)/banner
-ICON := $(RESOURCES)/icon
-RSF := $(TOPDIR)/$(RESOURCES)/template
+ICON := $(RESOURCES)/icon.png
+RSF := $(TOPDIR)/$(RESOURCES)/template.rsf
 
 #---------------------------------------------------------------------------------
 # Build Setup (code generation)
@@ -273,7 +273,7 @@ citra : $(OUTPUT_FILE).3dsx
 	citra $(OUTPUT_FILE).3dsx
 
 fbi : $(OUTPUT_FILE).cia
-	python ../buildtools/servefiles.py $(IP3DS) $(OUTPUT_FILE).cia
+	python3 ../buildtools/servefiles.py $(IP3DS) $(OUTPUT_FILE).cia
 
 hblauncher : $(OUTPUT_FILE).3dsx
 	3dslink -a $(IP3DS) $(OUTPUT_FILE).3dsx

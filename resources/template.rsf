@@ -1,11 +1,11 @@
 BasicInfo:
   Title                   : "Impostor 3DS"
-  ProductCode             : "CTR-P-SHIN"
-  Logo                    : Nintendo # Nintendo / Licensed / Distributed / iQue / iQueForSystem / Homebrew
+  ProductCode             : "CTR-P-IMP0"
+  Logo                    : Homebrew # Nintendo / Licensed / Distributed / iQue / iQueForSystem / Homebrew
 
 RomFs:
   # Specifies the root path of the read only file system to include in the ROM.
-  RootPath                : "romfs"
+  RootPath                : "../romfs"
 
 TitleInfo:
   Category                : Application

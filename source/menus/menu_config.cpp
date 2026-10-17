@@ -124,7 +124,7 @@ void loop_menu_config(){
         }
     }
 
-    if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores && nombre_seleccionado) cambiar_nombre(nombre_seleccionado);
+    if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
 
     num_impostores_str = std::to_string(partida.num_impostores);
     renderizar_menu(menu_config_arriba, menu_config_abajo);
