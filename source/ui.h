@@ -9,7 +9,8 @@ extern C2D_TextBuf buffer_txt_estatico;
 extern C2D_TextBuf buffer_txt_dinamico;
 
 enum class Color: u32{
-    BG = 0xFF800000,
+    BG = 0xFF641616,
+    OSCURO = 0xFF540606,
     AZUL = 0xFFFF3030,
     BLANCO = 0xFFFFFFFF,
     AZUL_CLARO = 0xFFFF8080,

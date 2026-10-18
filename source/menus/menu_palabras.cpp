@@ -43,6 +43,7 @@ void siguiente_jugador(){
 void loop_menu_palabras(){
     static vector<Elemento*> menu_palabras_arriba = {
         new TextoDinamico(200, 10, 0.75, texto_arriba, C2D_AlignCenter),
+        new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
         new Texto(200, 220, 0.5, "Cruceta: Navegar  A: Elegir nombre", C2D_AlignCenter)
     };
 

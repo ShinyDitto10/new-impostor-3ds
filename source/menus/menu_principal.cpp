@@ -12,6 +12,7 @@ static void boton_creditos(){
 void loop_menu_principal(){
     static vector<Elemento*> menu_principal_arriba = {
         new Texto(200, 50, 1.5f, "IMPOSTOR", C2D_AlignCenter),
+        new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
         new Texto(10, 220, .5f, "ver 0.1.0", 0),
         new Texto(390, 220, .5f, "Creado por ShinyDitto10", C2D_AlignRight)
     };
