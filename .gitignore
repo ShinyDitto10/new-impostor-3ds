@@ -2,6 +2,7 @@ build/
 buildtools/
 output/
 .vscode/
+.github/
 
 *.elf
 *.smdh
