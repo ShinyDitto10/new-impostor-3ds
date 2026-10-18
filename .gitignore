@@ -1,5 +1,4 @@
 build/
-buildtools/
 output/
 .vscode/
 
@@ -12,3 +11,4 @@ output/
 *.lst
 *.map
 *.dump
+*.py
