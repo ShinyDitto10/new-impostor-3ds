@@ -13,12 +13,16 @@ void Boton::update(){
 }
 
 void Boton::dibujar(){
+    float w_texto;
+    float h_texto;
+    C2D_TextGetDimensions(&texto, tamano_texto, tamano_texto, &w_texto, &h_texto);
+
     if(pos_tactil.px < x + w && pos_tactil.px > x && pos_tactil.py < y + h && pos_tactil.py > y){
         C2D_DrawRectSolid(x, y, 0, w, h, (u32)Color::AZUL_CLARO);
-        C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter | C2D_AtBaseline, x + w / 2, y + h / 2, 0, tamano_texto, tamano_texto, col_texto);
+        C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter, x + w / 2, y + (h - h_texto) / 2, 0, tamano_texto, tamano_texto, col_texto);
     } else{
         C2D_DrawRectSolid(x, y, 0, w, h, (u32)Color::AZUL);
-        C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter | C2D_AtBaseline, x + w / 2, y + h / 2, 0, tamano_texto, tamano_texto, col_texto);
+        C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter, x + w / 2, y + (h - h_texto) / 2, 0, tamano_texto, tamano_texto, col_texto);
     }
 }
 
@@ -96,8 +100,12 @@ bool Checkbox::tocado(){
 }
 
 void Checkbox::dibujar(bool activo){
+    float w_texto;
+    float h_texto;
+    C2D_TextGetDimensions(&texto, tamano_texto, tamano_texto, &w_texto, &h_texto);
+
     C2D_DrawRectSolid(x, y, 0, w, h, activo ? (u32)Color::AZUL_CLARO : (u32)Color::AZUL);
-    C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter | C2D_AtBaseline, x + w / 2, y + h / 2, 0, tamano_texto, tamano_texto, (u32)Color::BLANCO);
+    C2D_DrawText(&texto, C2D_WithColor | C2D_AlignCenter, x + w / 2, y + (h - h_texto) / 2, 0, tamano_texto, tamano_texto, (u32)Color::BLANCO);
 }
 
 Checkbox::Checkbox(int x, int y, int w, int h, const char* texto, Accion_Boton accion, float tamano_texto){
