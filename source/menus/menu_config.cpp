@@ -62,7 +62,7 @@ void loop_menu_config(){
     static vector<Elemento*> menu_config_arriba = {
         new Texto(200, 6, 1, "Jugadores", C2D_AlignCenter),
         new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
-        new Texto(200, 220, 0.5, "Cruceta: Navegar  A: Cambiar nombre  B: Volver", C2D_AlignCenter)
+        new Texto(200, 220, 0.5, "\uE006 Navegar  \uE000 Cambiar nombre  \uE001 Volver", C2D_AlignCenter)
     };
 
     //Para prevenir un memory leak MASIVO
