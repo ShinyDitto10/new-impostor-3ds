@@ -7,6 +7,9 @@ static u8 nombre_seleccionado = 0;
 
 static void anadir_jugador(){
     if(partida.num_jugadores < MAX_JUGADORES) partida.num_jugadores++;
+    if(partida.nombre_jugadores[partida.num_jugadores - 1] == ""){
+        partida.nombre_jugadores[partida.num_jugadores - 1] = "Jugador " + std::to_string(partida.num_jugadores);
+    }
 }
 
 static void quitar_jugador(){
@@ -58,11 +61,18 @@ static void cambiar_nombre(int jugador){
     partida.nombre_jugadores[jugador] = buffer;
 }
 
+static void eliminar_jugador(int jugador){
+    if(partida.num_jugadores <= MIN_JUGADORES) return;
+    for(int i = jugador; i < partida.num_jugadores; i++){
+        partida.nombre_jugadores[i] = partida.nombre_jugadores[i + 1];
+    } quitar_jugador();
+}
+
 void loop_menu_config(){
     static vector<Elemento*> menu_config_arriba = {
         new Texto(200, 6, 1, "Jugadores", C2D_AlignCenter),
         new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
-        new Texto(200, 220, 0.5, "\uE006 Navegar  \uE000 Cambiar nombre  \uE001 Volver", C2D_AlignCenter)
+        new Texto(200, 220, 0.5, "\uE006 Navegar  \uE000 Cambiar nombre  \uE001 Volver  \uE002 Eliminar", C2D_AlignCenter)
     };
 
     //Para prevenir un memory leak MASIVO
@@ -126,6 +136,7 @@ void loop_menu_config(){
     }
 
     if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
+    else if(kDown & KEY_X && nombre_seleccionado < partida.num_jugadores) eliminar_jugador(nombre_seleccionado);
 
     num_impostores_str = std::to_string(partida.num_impostores);
     renderizar_menu(menu_config_arriba, menu_config_abajo);
