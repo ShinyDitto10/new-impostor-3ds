@@ -101,9 +101,9 @@ struct Checkbox{
 template<size_t num_cajas>
 class Checklist : public Elemento{
     array<Checkbox, num_cajas> cajas;
+    public:
     size_t caja_activa = 0;
 
-    public:
     void update() override{
         for(size_t i = 0; i < num_cajas; i++){
             if(cajas.at(i).tocado()){

@@ -1,6 +1,7 @@
 #include "ui.h"
 #include "main.h"
 #include "gameplay.h"
+#include "guardado.h"
 
 static string num_impostores_str = "1";
 static u8 nombre_seleccionado = 0;
@@ -85,8 +86,11 @@ void loop_menu_config(){
     }
 
     static vector<Elemento*> menu_config_abajo = {
-        new Boton(15, 20, 139, 65, "Añadir\nJugador", anadir_jugador, 0.75),
-        new Boton(166, 20, 139, 65, "Quitar\nJugador", quitar_jugador, 0.75),
+        new Rect(0, 0, 320, 25, (u32)Color::OSCURO),
+        new Texto(160, 5, 0.5, "\uE004 Guardar config. \uE005 Cargar config.", C2D_AlignCenter),
+
+        new Boton(15, 35, 139, 50, "Añadir\nJugador", anadir_jugador, 0.75),
+        new Boton(166, 35, 139, 50, "Quitar\nJugador", quitar_jugador, 0.75),
 
         new Rect(15, 95, 290, 25, (u32)Color::AZUL),
         new Texto(20, 100, 0.6, "Número de impostores", 0),
@@ -137,6 +141,14 @@ void loop_menu_config(){
 
     if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
     else if(kDown & KEY_X && nombre_seleccionado < partida.num_jugadores) eliminar_jugador(nombre_seleccionado);
+    else if(kDown & KEY_L) guardar_config_partida(partida, 0);
+    else if(kDown & KEY_R){
+        cargar_config_partida(partida, 0);
+        Checklist<2>* c = (Checklist<2>*)menu_config_abajo[11];
+        c->caja_activa = !partida.hay_pista;
+        c = (Checklist<2>*)menu_config_abajo[14];
+        c->caja_activa = !partida.impostores_se_conocen;
+    }
 
     num_impostores_str = std::to_string(partida.num_impostores);
     renderizar_menu(menu_config_arriba, menu_config_abajo);

@@ -6,6 +6,7 @@ creado por ShinyDitto10*/
 #include "gameplay.h"
 #include "ui.h"
 #include "menus/menus.h"
+#include "guardado.h"
 
 Menu menu_activo = Menu::PRINCIPAL;
 vector<Elemento*> menu_nombres_gameplay;
@@ -43,6 +44,7 @@ int main(int argc, char* argv[]) {
 	buffer_txt_dinamico = C2D_TextBufNew(4096);
 
 	crear_menu_nombres();
+	crear_carpeta_juego();
 
     while (aptMainLoop())
 	{
