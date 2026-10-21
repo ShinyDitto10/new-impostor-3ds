@@ -5,6 +5,9 @@
 
 static string num_impostores_str = "1";
 static u8 nombre_seleccionado = 0;
+static bool menu_guardar = false;
+static bool menu_cargar = false;
+static bool toca_cargar = false;
 
 static void anadir_jugador(){
     if(partida.num_jugadores < MAX_JUGADORES) partida.num_jugadores++;
@@ -69,6 +72,17 @@ static void eliminar_jugador(int jugador){
     } quitar_jugador();
 }
 
+static void boton_slot(int slot){
+    if(menu_cargar){
+        cargar_config_partida(partida, slot);
+        menu_cargar = false;
+        toca_cargar = true;
+    } else if(menu_guardar){
+        guardar_config_partida(partida, slot);
+        menu_guardar = false;
+    }
+}
+
 void loop_menu_config(){
     static vector<Elemento*> menu_config_arriba = {
         new Texto(200, 6, 1, "Jugadores", C2D_AlignCenter),
@@ -112,7 +126,16 @@ void loop_menu_config(){
             Checkbox(270, 167 , 30, 21, "No", desactivar_se_conocen, 0.6)
         }, 1),
 
-        new Boton(100, 200, 120, 35, "Empezar partida", comenzar_partida, 0.6)
+        new Boton(100, 200, 120, 35, "Empezar partida", comenzar_partida, 0.6),
+
+        new Rect(20, 30, 280, 200, (u32)Color::AZUL),
+        new Texto(160, 40, 0.6, "Elige un archivo", C2D_AlignCenter),
+        new Boton(50, 80, 105, 33, "Archivo 1", [](){boton_slot(0);}, 0.5),
+        new Boton(165, 80, 105, 33, "Archivo 2", [](){boton_slot(1);}, 0.5),
+        new Boton(50, 123, 105, 33, "Archivo 3", [](){boton_slot(2);}, 0.5),
+        new Boton(165, 123, 105, 33, "Archivo 4", [](){boton_slot(3);}, 0.5),
+        new Boton(50, 166, 105, 33, "Archivo 5", [](){boton_slot(4);}, 0.5),
+        new Boton(165, 166, 105, 33, "Archivo 6", [](){boton_slot(5);}, 0.5),
     };
 
     if(kDown & KEY_B) menu_activo = Menu::PRINCIPAL;
@@ -141,14 +164,22 @@ void loop_menu_config(){
 
     if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
     else if(kDown & KEY_X && nombre_seleccionado < partida.num_jugadores) eliminar_jugador(nombre_seleccionado);
-    else if(kDown & KEY_L) guardar_config_partida(partida, 0);
+    else if(kDown & KEY_L){
+        menu_guardar = true;
+        for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = true;
+    }
     else if(kDown & KEY_R){
-        cargar_config_partida(partida, 0);
+        menu_cargar = true;
+        for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = true;
+    }
+    if(toca_cargar){
         Checklist<2>* c = (Checklist<2>*)menu_config_abajo[11];
         c->caja_activa = !partida.hay_pista;
         c = (Checklist<2>*)menu_config_abajo[14];
         c->caja_activa = !partida.impostores_se_conocen;
+        toca_cargar = false;
     }
+    if(!menu_cargar && !menu_guardar) for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = false;
 
     num_impostores_str = std::to_string(partida.num_impostores);
     renderizar_menu(menu_config_arriba, menu_config_abajo);
