@@ -77,6 +77,7 @@ static void boton_slot(int slot){
         cargar_config_partida(partida, slot);
         menu_cargar = false;
         toca_cargar = true;
+        if(partida.num_jugadores <= nombre_seleccionado) nombre_seleccionado = partida.num_jugadores - 1;
     } else if(menu_guardar){
         guardar_config_partida(partida, slot);
         menu_guardar = false;
@@ -129,7 +130,8 @@ void loop_menu_config(){
         new Boton(100, 200, 120, 35, "Empezar partida", comenzar_partida, 0.6),
 
         new Rect(20, 30, 280, 200, (u32)Color::AZUL),
-        new Texto(160, 40, 0.6, "Elige un archivo", C2D_AlignCenter),
+        new Rect(30, 40, 260, 180, (u32)Color::BG),
+        new Texto(160, 50, 0.6, "Elige un archivo", C2D_AlignCenter),
         new Boton(50, 80, 105, 33, "Archivo 1", [](){boton_slot(0);}, 0.5),
         new Boton(165, 80, 105, 33, "Archivo 2", [](){boton_slot(1);}, 0.5),
         new Boton(50, 123, 105, 33, "Archivo 3", [](){boton_slot(2);}, 0.5),
@@ -138,7 +140,13 @@ void loop_menu_config(){
         new Boton(165, 166, 105, 33, "Archivo 6", [](){boton_slot(5);}, 0.5),
     };
 
-    if(kDown & KEY_B) menu_activo = Menu::PRINCIPAL;
+    if(kDown & KEY_B){
+        if(!menu_cargar && !menu_guardar) menu_activo = Menu::PRINCIPAL;
+        else{
+            menu_cargar = false;
+            menu_guardar = false;
+        }
+    }
     if(kDown & KEY_DLEFT && nombre_seleccionado % 3 != 0) nombre_seleccionado--;
     if(kDown & KEY_DRIGHT && nombre_seleccionado % 3 != 2 && nombre_seleccionado < partida.num_jugadores - 1) nombre_seleccionado++;
     if(kDown & KEY_DUP && nombre_seleccionado / 3 != 0) nombre_seleccionado -= 3;
@@ -164,13 +172,13 @@ void loop_menu_config(){
 
     if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
     else if(kDown & KEY_X && nombre_seleccionado < partida.num_jugadores) eliminar_jugador(nombre_seleccionado);
-    else if(kDown & KEY_L){
+    else if(kDown & KEY_L && !menu_cargar){
         menu_guardar = true;
-        for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = true;
+        for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = true;
     }
-    else if(kDown & KEY_R){
+    else if(kDown & KEY_R && !menu_guardar){
         menu_cargar = true;
-        for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = true;
+        for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = true;
     }
     if(toca_cargar){
         Checklist<2>* c = (Checklist<2>*)menu_config_abajo[11];
@@ -179,7 +187,7 @@ void loop_menu_config(){
         c->caja_activa = !partida.impostores_se_conocen;
         toca_cargar = false;
     }
-    if(!menu_cargar && !menu_guardar) for(int i = 16; i < 24; i++) menu_config_abajo[i]->activo = false;
+    if(!menu_cargar && !menu_guardar) for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = false;
 
     num_impostores_str = std::to_string(partida.num_impostores);
     renderizar_menu(menu_config_arriba, menu_config_abajo);
