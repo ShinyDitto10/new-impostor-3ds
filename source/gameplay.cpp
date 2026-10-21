@@ -27,11 +27,11 @@ void leer_palabras_archivo(const char* ruta_archivo){
 void Partida::escoger_palabras(){
     int id_palabra = std::rand() % lista_palabras.size();
     palabra_jugadores = lista_palabras[id_palabra].palabra;
-    palabra_jugadores.pop_back();
+    if(palabra_jugadores.at(palabra_jugadores.size() - 1) == 0xD) palabra_jugadores.pop_back();
 
     int id_pista = std::rand() % 3;
     pista_impostor = lista_palabras[id_palabra].pistas[id_pista];
-    pista_impostor.pop_back();
+    if(pista_impostor.at(pista_impostor.size() - 1) == 0xD) pista_impostor.pop_back();
 }
 
 void Partida::escoger_impostores(){
