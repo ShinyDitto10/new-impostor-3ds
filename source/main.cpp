@@ -74,6 +74,9 @@ int main(int argc, char* argv[]) {
 			case Menu::RESULTADOS:
 				loop_menu_resultados();
 				break;
+			case Menu::OPCIONES:
+				loop_menu_opciones();
+				break;
             case Menu::CREDITOS:
                 loop_menu_creditos();
                 break;

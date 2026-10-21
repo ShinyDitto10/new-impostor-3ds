@@ -87,3 +87,17 @@ bool cargar_config_partida(Partida& partida, int slot){
     delete[] buffer;
     return true;
 }
+
+vector<string> leer_carpeta(const char* carpeta){
+    vector<string> archivos;
+    DIR* dir;
+    dirent* ent;
+    if((dir = opendir(carpeta)) == nullptr) return archivos;
+
+    while((ent = readdir(dir)) != nullptr){
+        if(ent->d_type != DT_REG) continue;
+        archivos.push_back(string(ent->d_name));
+    }
+    closedir(dir);
+    return archivos;
+}

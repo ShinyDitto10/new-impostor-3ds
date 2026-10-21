@@ -9,6 +9,10 @@ static void boton_creditos(){
     menu_activo = Menu::CREDITOS;
 }
 
+static void boton_opciones(){
+    menu_activo = Menu::OPCIONES;
+}
+
 void loop_menu_principal(){
     static vector<Elemento*> menu_principal_arriba = {
         new Texto(200, 50, 1.5f, "IMPOSTOR", C2D_AlignCenter),
@@ -19,7 +23,7 @@ void loop_menu_principal(){
 
     static vector<Elemento*> menu_principal_abajo = {
         new Boton(22, 20, 276, 80, "Jugar", boton_jugar, 1.0),
-        new Boton(22, 115, 82, 80, "Opciones", nullptr, 0.75),
+        new Boton(22, 115, 82, 80, "Opciones", boton_opciones, 0.75),
         new Boton(119, 115, 82, 80, "Cómo\njugar", nullptr, 0.75),
         new Boton(216, 115, 82, 80, "Créditos", boton_creditos, 0.75),
         new Texto(160, 220, 0.5f, "Pulsa START para salir", C2D_AlignCenter)
