@@ -3,6 +3,7 @@
 #include <citro2d.h>
 #include <vector>
 #include <array>
+#include <functional>
 using std::string, std::vector, std::array;
 
 extern C2D_TextBuf buffer_txt_estatico;
@@ -29,7 +30,8 @@ class Elemento{
     bool activo = true;
 };
 
-typedef void(*Accion_Boton)(void);
+//typedef void(*Accion_Boton)(void);
+using Accion_Boton = std::function<void(void)>;
 
 class Boton : public Elemento{
     int x, y, w, h;
