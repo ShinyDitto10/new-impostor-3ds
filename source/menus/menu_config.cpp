@@ -1,5 +1,4 @@
-#include "ui.h"
-#include "main.h"
+#include "menus.h"
 #include "gameplay.h"
 #include "guardado.h"
 
@@ -51,7 +50,7 @@ static void desactivar_se_conocen(){
 static void comenzar_partida(){
     partida.escoger_palabras();
     partida.escoger_impostores();
-    menu_activo = Menu::PALABRAS;
+    init_menu(Menu::PALABRAS);
 }
 
 static void cambiar_nombre(int jugador){
@@ -84,23 +83,14 @@ static void boton_slot(int slot){
     }
 }
 
-void loop_menu_config(){
-    static vector<Elemento*> menu_config_arriba = {
+void init_menu_config(){
+    menu_arriba.assign({
         new Texto(200, 6, 1, "Jugadores", C2D_AlignCenter),
         new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
         new Texto(200, 220, 0.5, "\uE006 Navegar  \uE000 Cambiar nombre  \uE001 Volver  \uE002 Eliminar", C2D_AlignCenter)
-    };
+    });
 
-    //Para prevenir un memory leak MASIVO
-    static bool menu_abierto = false;
-    if(!menu_abierto){
-        for(auto i : menu_nombres_gameplay){
-            menu_config_arriba.push_back(i);
-        }
-        menu_abierto = true;
-    }
-
-    static vector<Elemento*> menu_config_abajo = {
+    menu_abajo.assign({
         new Rect(0, 0, 320, 25, (u32)Color::OSCURO),
         new Texto(160, 5, 0.5, "\uE004 Guardar config. \uE005 Cargar config.", C2D_AlignCenter),
 
@@ -138,10 +128,12 @@ void loop_menu_config(){
         new Boton(165, 123, 105, 33, "Archivo 4", [](){boton_slot(3);}, 0.5),
         new Boton(50, 166, 105, 33, "Archivo 5", [](){boton_slot(4);}, 0.5),
         new Boton(165, 166, 105, 33, "Archivo 6", [](){boton_slot(5);}, 0.5),
-    };
+    });
+}
 
+void loop_menu_config(){
     if(kDown & KEY_B){
-        if(!menu_cargar && !menu_guardar) menu_activo = Menu::PRINCIPAL;
+        if(!menu_cargar && !menu_guardar) init_menu(Menu::PRINCIPAL);
         else{
             menu_cargar = false;
             menu_guardar = false;
@@ -172,23 +164,24 @@ void loop_menu_config(){
 
     if(kDown & KEY_A && nombre_seleccionado < partida.num_jugadores) cambiar_nombre(nombre_seleccionado);
     else if(kDown & KEY_X && nombre_seleccionado < partida.num_jugadores) eliminar_jugador(nombre_seleccionado);
-    else if(kDown & KEY_L && !menu_cargar){
+    else if(kDown & KEY_L && !menu_cargar && menu_activo == Menu::CONFIGURACION){
         menu_guardar = true;
-        for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = true;
+        for(int i = 16; i < 25; i++) menu_abajo[i]->activo = true;
     }
-    else if(kDown & KEY_R && !menu_guardar){
+    else if(kDown & KEY_R && !menu_guardar && menu_activo == Menu::CONFIGURACION){
         menu_cargar = true;
-        for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = true;
+        for(int i = 16; i < 25; i++) menu_abajo[i]->activo = true;
     }
     if(toca_cargar){
-        Checklist<2>* c = (Checklist<2>*)menu_config_abajo[11];
+        Checklist<2>* c = (Checklist<2>*)menu_abajo[11];
         c->caja_activa = !partida.hay_pista;
-        c = (Checklist<2>*)menu_config_abajo[14];
+        c = (Checklist<2>*)menu_abajo[14];
         c->caja_activa = !partida.impostores_se_conocen;
         toca_cargar = false;
     }
-    if(!menu_cargar && !menu_guardar) for(int i = 16; i < 25; i++) menu_config_abajo[i]->activo = false;
+    if(!menu_cargar && !menu_guardar && menu_activo == Menu::CONFIGURACION) for(int i = 16; i < 25; i++) menu_abajo[i]->activo = false;
 
     num_impostores_str = std::to_string(partida.num_impostores);
-    renderizar_menu(menu_config_arriba, menu_config_abajo);
+    renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_menu_nombres();
 }

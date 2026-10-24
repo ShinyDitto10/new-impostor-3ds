@@ -1,5 +1,4 @@
-#include "ui.h"
-#include "main.h"
+#include "menus.h"
 #include "gameplay.h"
 
 static string palabra_str = "La palabra era ";
@@ -7,35 +6,28 @@ static string palabra_str = "La palabra era ";
 void jugar_de_nuevo(){
     partida.escoger_palabras();
     partida.escoger_impostores();
-    menu_activo = Menu::PALABRAS;
+    init_menu(Menu::PALABRAS);
 }
 
 void volver_al_menu(){
-    menu_activo = Menu::PRINCIPAL;
+    init_menu(Menu::PRINCIPAL);
 }
 
-void loop_menu_resultados(){
-    static vector<Elemento*> menu_resultados_arriba = {
+void init_menu_resultados(){
+    menu_arriba.assign({
         new Texto(200, 6, 0.75, "Los impostores eran:", C2D_AlignCenter)
-    };
+    });
 
-    //Para prevenir un memory leak MASIVO
-    static bool menu_abierto = false;
-    if(!menu_abierto){
-        for(auto i : menu_nombres_gameplay){
-            menu_resultados_arriba.push_back(i);
-        }
-        menu_abierto = true;
-    }
-
-    static vector<Elemento*> menu_resultados_abajo = {
+    menu_abajo.assign({
         new TextoDinamico(160, 70, 0.8, palabra_str, C2D_AlignCenter),
         new Boton(70, 130, 180, 35, "Jugar de nuevo", jugar_de_nuevo, 0.6),
         new Boton(70, 175, 180, 35, "Volver al menú", volver_al_menu, 0.6)
-    };
+    });
 
     palabra_str = "La palabra era\n" + partida.palabra_jugadores;
+}
 
+void loop_menu_resultados(){
     for(int i = 0; i < MAX_JUGADORES; i++){
         Rect* r = (Rect*)menu_nombres_gameplay.at(i);
         TextoDinamico* t = (TextoDinamico*)menu_nombres_gameplay.at(12 + i);
@@ -52,5 +44,6 @@ void loop_menu_resultados(){
         }
     }
 
-    renderizar_menu(menu_resultados_arriba, menu_resultados_abajo);
+    renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_menu_nombres();
 }

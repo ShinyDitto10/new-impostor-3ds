@@ -46,6 +46,8 @@ int main(int argc, char* argv[]) {
 	crear_menu_nombres();
 	crear_carpeta_juego();
 
+	init_menu(Menu::PRINCIPAL);
+
     while (aptMainLoop())
 	{
         hidScanInput();

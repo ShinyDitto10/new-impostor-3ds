@@ -4,6 +4,9 @@
 C2D_TextBuf buffer_txt_estatico;
 C2D_TextBuf buffer_txt_dinamico;
 
+vector<Elemento*> menu_abajo;
+vector<Elemento*> menu_arriba;
+
 void Boton::update(){
     //Comprueba si el botón se ha soltado este frame
     if(pos_tactil_anterior.px < x + w && pos_tactil_anterior.px > x && pos_tactil_anterior.py < y + h && pos_tactil_anterior.py > y
@@ -119,26 +122,28 @@ Checkbox::Checkbox(int x, int y, int w, int h, const char* texto, Accion_Boton a
     C2D_TextOptimize(&this->texto);
 }
 
-void actualizar_checklist(){
-
-}
-
 void renderizar_menu(vector<Elemento*>& menu_arriba, vector<Elemento*>& menu_abajo){
+    Menu menu_al_iniciar = menu_activo;
+
     for(auto& i : menu_arriba){
-        if(i->activo) i->update();
+        if(i != nullptr && i->activo) i->update();
+        if(menu_al_iniciar != menu_activo) break;
     }
+    if(menu_al_iniciar != menu_activo) return;
     for(auto& i : menu_abajo){
-        if(i->activo) i->update();
+        if(i != nullptr && i->activo) i->update();
+        if(menu_al_iniciar != menu_activo) break;
     }
+    if(menu_al_iniciar != menu_activo) return;
 
     C2D_SceneBegin(top);
     C2D_TargetClear(top, (u32)Color::BG);
     for(auto& i : menu_arriba){
-        if(i->activo) i->dibujar();
+        if(i != nullptr && i->activo) i->dibujar();
     }
     C2D_SceneBegin(bottom);
     C2D_TargetClear(bottom, (u32)Color::BG);
     for(auto& i : menu_abajo){
-        if(i->activo) i->dibujar();
+        if(i != nullptr && i->activo) i->dibujar();
     }
 }

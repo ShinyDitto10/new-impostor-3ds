@@ -1,5 +1,4 @@
-#include "ui.h"
-#include "main.h"
+#include "menus.h"
 #include "gameplay.h"
 #include <algorithm>
 
@@ -32,56 +31,49 @@ void siguiente_jugador(){
     texto_arriba = "Escoge tu nombre de la lista:";
 
     if(jugadores_visto_palabra.size() == partida.num_jugadores){
-        menu_activo = Menu::PARTIDA;
         jugadores_visto_palabra.clear();
         nombre_seleccionado = 0;
         partida.escoger_primer_jugador();
         partida.empezar_crono();
+        init_menu(Menu::PARTIDA);
     }
 }
 
-void loop_menu_palabras(){
-    static vector<Elemento*> menu_palabras_arriba = {
+void init_menu_palabras(){
+    menu_arriba.assign({
         new TextoDinamico(200, 10, 0.75, texto_arriba, C2D_AlignCenter),
         new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
         new Texto(200, 220, 0.5, "\uE006 Navegar  \uE000 Elegir nombre", C2D_AlignCenter)
-    };
+    });
 
-    //Para prevenir un memory leak MASIVO
-    static bool menu_abierto = false;
-    if(!menu_abierto){
-        for(auto i : menu_nombres_gameplay){
-            menu_palabras_arriba.push_back(i);
-        }
-        menu_abierto = true;
-    }
-
-    static vector<Elemento*> menu_palabras_abajo = {
+    menu_abajo.assign({
         new Boton(40, 40, 240, 150, "Pulsa para ver\ntu palabra", mostrar_palabra, 1),
         new Boton(70, 200, 180, 35, "Siguiente jugador", siguiente_jugador, 0.6),
         new Rect(40, 40, 240, 150, (u32)Color::AZUL),
         new TextoDinamico(160, 80, 1, texto_tarjeta, C2D_AlignCenter)
-    };
+    });
+}
 
+void loop_menu_palabras(){
     //Navegar el menu
-    if(!viendo_palabra){
-        menu_palabras_abajo[0]->activo = false;
-        menu_palabras_abajo[1]->activo = false;
-        menu_palabras_abajo[2]->activo = false;
+    if(!viendo_palabra && menu_activo == Menu::PALABRAS){
+        menu_abajo[0]->activo = false;
+        menu_abajo[1]->activo = false;
+        menu_abajo[2]->activo = false;
         if(kDown & KEY_DLEFT && nombre_seleccionado % 3 != 0) nombre_seleccionado--;
         if(kDown & KEY_DRIGHT && nombre_seleccionado % 3 != 2 && nombre_seleccionado < partida.num_jugadores - 1) nombre_seleccionado++;
         if(kDown & KEY_DUP && nombre_seleccionado / 3 != 0) nombre_seleccionado -= 3;
         if(kDown & KEY_DDOWN && nombre_seleccionado < partida.num_jugadores - 3) nombre_seleccionado += 3;
         if(kDown & KEY_A && std::find(jugadores_visto_palabra.begin(), jugadores_visto_palabra.end(), nombre_seleccionado) == jugadores_visto_palabra.end()){
             viendo_palabra = nombre_seleccionado + 1;
-            menu_palabras_abajo[0]->activo = true;
+            menu_abajo[0]->activo = true;
         }
     // Palabra ya escogida (toca darle a siguiente jugador)
-    } else if(palabra_vista){
-        menu_palabras_abajo[2]->activo = true;
-        menu_palabras_abajo[1]->activo = true;
-        menu_palabras_abajo[0]->activo = false;
-        TextoDinamico* tarjeta = (TextoDinamico*)menu_palabras_abajo[3];
+    } else if(palabra_vista && menu_activo == Menu::PALABRAS){
+        menu_abajo[2]->activo = true;
+        menu_abajo[1]->activo = true;
+        menu_abajo[0]->activo = false;
+        TextoDinamico* tarjeta = (TextoDinamico*)menu_abajo[3];
         tarjeta->color = color_tarjeta;
     }
 
@@ -104,6 +96,6 @@ void loop_menu_palabras(){
         }
     }
 
-    //if(kDown & KEY_B) menu_activo = Menu::PRINCIPAL;
-    renderizar_menu(menu_palabras_arriba, menu_palabras_abajo);
+    renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_menu_nombres();
 }

@@ -3,7 +3,7 @@
 #include "gameplay.h"
 
 void crear_menu_nombres(){
-    menu_nombres_gameplay = {
+    menu_nombres_gameplay.assign({
         new Rect(14, 45, 118, 37, (u32)Color::AZUL),
         new Rect(139, 45, 118, 37, (u32)Color::AZUL),
         new Rect(264, 45, 118, 37, (u32)Color::AZUL),
@@ -29,7 +29,7 @@ void crear_menu_nombres(){
         new TextoDinamico(73, 182, 0.65, partida.nombre_jugadores[9], C2D_AlignCenter),
         new TextoDinamico(198, 182, 0.65, partida.nombre_jugadores[10], C2D_AlignCenter),
         new TextoDinamico(323, 182, 0.65, partida.nombre_jugadores[11], C2D_AlignCenter),
-    };
+    });
 }
 
 void actualizar_menu_nombres(){
@@ -46,5 +46,13 @@ void actualizar_menu_nombres(){
 
         TextoDinamico* t = (TextoDinamico*)menu_nombres_gameplay.at(12 + i);
         t->color = (u32)Color::BLANCO;
+    }
+}
+
+void renderizar_menu_nombres(){
+    C2D_SceneBegin(top);
+    for(auto i : menu_nombres_gameplay){
+        i->update();
+        i->dibujar();
     }
 }
