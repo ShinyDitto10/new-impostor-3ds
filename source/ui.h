@@ -33,7 +33,6 @@ class Elemento{
 extern vector<Elemento*> menu_abajo;
 extern vector<Elemento*> menu_arriba;
 
-//typedef void(*Accion_Boton)(void);
 using Accion_Boton = std::function<void(void)>;
 
 class Boton : public Elemento{

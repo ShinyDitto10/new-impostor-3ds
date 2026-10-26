@@ -2,7 +2,7 @@
 #include "gameplay.h"
 #include "guardado.h"
 
-static string lista_archivos = "Pulsa A para leer la carpeta\nsdmc:/3ds/Impostor3DS/palabras/";
+static string lista_archivos = "";
 static vector<string> archivos;
 static vector<bool> botones_pulsados;
 

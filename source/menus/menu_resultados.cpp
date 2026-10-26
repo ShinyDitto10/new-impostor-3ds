@@ -1,8 +1,6 @@
 #include "menus.h"
 #include "gameplay.h"
 
-static string palabra_str = "La palabra era ";
-
 void jugar_de_nuevo(){
     partida.escoger_palabras();
     partida.escoger_impostores();
@@ -14,17 +12,17 @@ void volver_al_menu(){
 }
 
 void init_menu_resultados(){
+    string palabra_str = "La palabra era\n" + partida.palabra_jugadores;
+
     menu_arriba.assign({
         new Texto(200, 6, 0.75, "Los impostores eran:", C2D_AlignCenter)
     });
 
     menu_abajo.assign({
-        new TextoDinamico(160, 70, 0.8, palabra_str, C2D_AlignCenter),
+        new Texto(160, 70, 0.8, palabra_str.c_str(), C2D_AlignCenter),
         new Boton(70, 130, 180, 35, "Jugar de nuevo", jugar_de_nuevo, 0.6),
         new Boton(70, 175, 180, 35, "Volver al menú", volver_al_menu, 0.6)
     });
-
-    palabra_str = "La palabra era\n" + partida.palabra_jugadores;
 }
 
 void loop_menu_resultados(){

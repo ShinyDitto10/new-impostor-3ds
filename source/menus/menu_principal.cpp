@@ -1,7 +1,5 @@
 #include "menus.h"
 
-static string buffer_est = "Buffer: 0";
-
 static void boton_jugar(){
     init_menu(Menu::CONFIGURACION);
 }
@@ -19,8 +17,7 @@ void init_menu_principal(){
         new Texto(200, 50, 1.5f, "IMPOSTOR", C2D_AlignCenter),
         new Rect(0, 215, 400, 25, (u32)Color::OSCURO),
         new Texto(10, 220, .5f, "ver 0.1.0", 0),
-        new Texto(390, 220, .5f, "Creado por ShinyDitto10", C2D_AlignRight),
-        new TextoDinamico(0, 0, 0.5, buffer_est, 0)
+        new Texto(390, 220, .5f, "Creado por ShinyDitto10", C2D_AlignRight)
     });
 
     menu_abajo.assign({
@@ -33,6 +30,5 @@ void init_menu_principal(){
 }
 
 void loop_menu_principal(){
-    buffer_est = "Buffer: " + std::to_string(C2D_TextBufGetNumGlyphs(buffer_txt_estatico));
     renderizar_menu(menu_arriba, menu_abajo);
 }

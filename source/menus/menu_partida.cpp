@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <sstream>
 
-static string primer_jugador_str = "Empieza ";
 static string tiempo_ronda_str = "Tiempo: 0:00";
 
 static void terminar_partida(){
@@ -11,13 +10,13 @@ static void terminar_partida(){
 }
 
 void init_menu_partida(){
+    string primer_jugador_str = "Empieza " + partida.nombre_jugadores[partida.empieza];
+
     menu_abajo.assign({
-        new TextoDinamico(160, 70, 0.8, primer_jugador_str, C2D_AlignCenter),
+        new Texto(160, 70, 0.8, primer_jugador_str.c_str(), C2D_AlignCenter),
         new TextoDinamico(160, 95, 0.8, tiempo_ronda_str, C2D_AlignCenter),
         new Boton(70, 130, 180, 35, "Terminar partida", terminar_partida, 0.6)
     });
-
-    primer_jugador_str = "Empieza " + partida.nombre_jugadores[partida.empieza];
 }
 
 void loop_menu_partida(){

@@ -7,18 +7,22 @@ static bool viendo_palabra = false;
 static bool palabra_vista = false;
 static vector<int> jugadores_visto_palabra;
 static int nombre_seleccionado = 0;
-static u32 color_tarjeta;
 static string texto_arriba = "Escoge tu nombre de la lista:";
 
 void mostrar_palabra(){
     palabra_vista = true;
+    menu_abajo[2]->activo = true;
+    menu_abajo[1]->activo = true;
+    menu_abajo[0]->activo = false;
+    TextoDinamico* tarjeta = (TextoDinamico*)menu_abajo[3];
+
     if(partida.jugador_es_impostor(nombre_seleccionado)){
-        color_tarjeta = (u32)Color::ROJO;
+        tarjeta->color = (u32)Color::ROJO;
         texto_tarjeta = "IMPOSTOR";
         if(partida.hay_pista) texto_tarjeta += "\nPista: " + partida.pista_impostor;
         if(partida.impostores_se_conocen) texto_arriba = "Los impostores son:";
     } else{
-        color_tarjeta = (u32)Color::VERDE;
+        tarjeta->color = (u32)Color::VERDE;
         texto_tarjeta = partida.palabra_jugadores;
     }
 }
@@ -29,6 +33,10 @@ void siguiente_jugador(){
     jugadores_visto_palabra.push_back(nombre_seleccionado);
     texto_tarjeta = "";
     texto_arriba = "Escoge tu nombre de la lista:";
+
+    menu_abajo[0]->activo = false;
+    menu_abajo[1]->activo = false;
+    menu_abajo[2]->activo = false;
 
     if(jugadores_visto_palabra.size() == partida.num_jugadores){
         jugadores_visto_palabra.clear();
@@ -52,14 +60,15 @@ void init_menu_palabras(){
         new Rect(40, 40, 240, 150, (u32)Color::AZUL),
         new TextoDinamico(160, 80, 1, texto_tarjeta, C2D_AlignCenter)
     });
+
+    menu_abajo[0]->activo = false;
+    menu_abajo[1]->activo = false;
+    menu_abajo[2]->activo = false;
 }
 
 void loop_menu_palabras(){
     //Navegar el menu
     if(!viendo_palabra && menu_activo == Menu::PALABRAS){
-        menu_abajo[0]->activo = false;
-        menu_abajo[1]->activo = false;
-        menu_abajo[2]->activo = false;
         if(kDown & KEY_DLEFT && nombre_seleccionado % 3 != 0) nombre_seleccionado--;
         if(kDown & KEY_DRIGHT && nombre_seleccionado % 3 != 2 && nombre_seleccionado < partida.num_jugadores - 1) nombre_seleccionado++;
         if(kDown & KEY_DUP && nombre_seleccionado / 3 != 0) nombre_seleccionado -= 3;
@@ -68,13 +77,6 @@ void loop_menu_palabras(){
             viendo_palabra = nombre_seleccionado + 1;
             menu_abajo[0]->activo = true;
         }
-    // Palabra ya escogida (toca darle a siguiente jugador)
-    } else if(palabra_vista && menu_activo == Menu::PALABRAS){
-        menu_abajo[2]->activo = true;
-        menu_abajo[1]->activo = true;
-        menu_abajo[0]->activo = false;
-        TextoDinamico* tarjeta = (TextoDinamico*)menu_abajo[3];
-        tarjeta->color = color_tarjeta;
     }
 
     for(int i = 0; i < MAX_JUGADORES; i++){

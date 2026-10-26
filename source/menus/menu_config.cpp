@@ -6,7 +6,6 @@ static string num_impostores_str = "1";
 static u8 nombre_seleccionado = 0;
 static bool menu_guardar = false;
 static bool menu_cargar = false;
-static bool toca_cargar = false;
 
 static void anadir_jugador(){
     if(partida.num_jugadores < MAX_JUGADORES) partida.num_jugadores++;
@@ -75,8 +74,12 @@ static void boton_slot(int slot){
     if(menu_cargar){
         cargar_config_partida(partida, slot);
         menu_cargar = false;
-        toca_cargar = true;
         if(partida.num_jugadores <= nombre_seleccionado) nombre_seleccionado = partida.num_jugadores - 1;
+
+        Checklist<2>* c = (Checklist<2>*)menu_abajo[11];
+        c->caja_activa = !partida.hay_pista;
+        c = (Checklist<2>*)menu_abajo[14];
+        c->caja_activa = !partida.impostores_se_conocen;
     } else if(menu_guardar){
         guardar_config_partida(partida, slot);
         menu_guardar = false;
@@ -171,13 +174,6 @@ void loop_menu_config(){
     else if(kDown & KEY_R && !menu_guardar && menu_activo == Menu::CONFIGURACION){
         menu_cargar = true;
         for(int i = 16; i < 25; i++) menu_abajo[i]->activo = true;
-    }
-    if(toca_cargar){
-        Checklist<2>* c = (Checklist<2>*)menu_abajo[11];
-        c->caja_activa = !partida.hay_pista;
-        c = (Checklist<2>*)menu_abajo[14];
-        c->caja_activa = !partida.impostores_se_conocen;
-        toca_cargar = false;
     }
     if(!menu_cargar && !menu_guardar && menu_activo == Menu::CONFIGURACION) for(int i = 16; i < 25; i++) menu_abajo[i]->activo = false;
 
