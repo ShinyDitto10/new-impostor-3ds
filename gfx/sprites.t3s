@@ -1,2 +1,8 @@
 --atlas -f rgba8888 --border edge -z auto
 github-qr.png
+battery0.png
+battery1.png
+battery2.png
+battery3.png
+battery4.png
+batteryCharge.png

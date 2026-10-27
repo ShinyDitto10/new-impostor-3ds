@@ -23,3 +23,6 @@ void loop_menu_opciones();
 void crear_menu_nombres();
 //void actualizar_menu_nombres();
 void renderizar_menu_nombres();
+
+void crear_barra_arriba();
+void renderizar_barra_arriba();

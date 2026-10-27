@@ -31,4 +31,5 @@ void init_menu_principal(){
 
 void loop_menu_principal(){
     renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_barra_arriba();
 }

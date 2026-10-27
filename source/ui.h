@@ -74,11 +74,11 @@ class TextoDinamico : public Elemento{
 };
 
 class Sprite : public Elemento{
+    public:
     int x, y;
     float tamano;
     C2D_Sprite sprite;
 
-    public:
     void dibujar() override;
     Sprite(int x, int y, float tamano, C2D_Sprite sprite);
 };

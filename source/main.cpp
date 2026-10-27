@@ -19,6 +19,7 @@ C3D_RenderTarget* bottom;
 C3D_RenderTarget* top;
 
 C2D_Sprite codigo_qr;
+C2D_Sprite bateria[6];
 
 //---------------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
@@ -34,6 +35,8 @@ int main(int argc, char* argv[]) {
 	C2D_SpriteSetPos(&codigo_qr, 185, 45);
 	C2D_SpriteSetScale(&codigo_qr, 1, 1);
 
+	for(int i = 0; i < 6; i++) C2D_SpriteFromSheet(&bateria[i], spritesT3X, i + 1);
+
 	bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 	top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 
@@ -44,7 +47,10 @@ int main(int argc, char* argv[]) {
 	buffer_txt_dinamico = C2D_TextBufNew(4096);
 
 	crear_menu_nombres();
+	crear_barra_arriba();
 	crear_carpeta_juego();
+
+	ptmuInit();
 
 	init_menu(Menu::PRINCIPAL);
 
@@ -97,5 +103,6 @@ int main(int argc, char* argv[]) {
 	C3D_Fini();
 	gfxExit();
 	romfsExit();
+	ptmuExit();
 	return 0;
 }

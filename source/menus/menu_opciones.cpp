@@ -47,4 +47,5 @@ void loop_menu_opciones(){
 
     if(kDown & KEY_B) init_menu(Menu::PRINCIPAL);
     renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_barra_arriba();
 }

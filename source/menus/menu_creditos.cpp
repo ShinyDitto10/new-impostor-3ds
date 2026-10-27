@@ -22,4 +22,5 @@ void init_menu_creditos(){
 void loop_menu_creditos(){
     if(kDown & KEY_B) init_menu(Menu::PRINCIPAL);
     renderizar_menu(menu_arriba, menu_abajo);
+    renderizar_barra_arriba();
 }

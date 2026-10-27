@@ -21,3 +21,4 @@ extern C3D_RenderTarget* bottom;
 extern C3D_RenderTarget* top;
 
 extern C2D_Sprite codigo_qr;
+extern C2D_Sprite bateria[6];
